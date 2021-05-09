@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:app = "http://schemas.android.com/apk/res-auto"
+    android:layout_width = "match_parent"
+    android:layout_height = "wrap_content"
+    android:gravity = "center_vertical"
+    android:padding = "10dp"
+    android:weightSum = "1">
+    <LinearLayout
+        android:layout_width = "0dp"
+        android:layout_height = "match_parent"
+        android:layout_weight = "0.6">
+
+        <ImageView
+            android:layout_width = "wrap_content"
+            android:layout_height = "match_parent"
+            android:id="@+id/action_bar_back_button"
+            android:src = "@drawable/ic_baseline_arrow_back_24"
+            android:layout_marginRight="20dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id = "@+id/action_bar_title"
+            android:layout_width = "match_parent"
+            android:layout_height = "wrap_content"
+            android:text = "@string/app_name"
+            android:textSize = "20sp"
+            android:textStyle = "bold"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width = "0dp"
+        android:layout_height = "match_parent"
+        android:layout_weight = "0.4"
+        android:gravity = "end">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/action_bar_pick_button"
+            android:gravity="center"
+            android:layout_marginEnd="10dp"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:layout_width = "wrap_content"
+            android:layout_height = "match_parent"
+            android:id="@+id/action_bar_settings_button"
+            android:src = "@drawable/ic_baseline_settings_24"
+            android:visibility="gone"/>
+    </LinearLayout>
+</LinearLayout>
