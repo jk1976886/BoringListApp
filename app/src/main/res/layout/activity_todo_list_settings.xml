@@ -48,7 +48,7 @@
                 android:text="Reset Period"/>
 
             <Spinner
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:id="@+id/reset_period_spinner"
                 app:layout_constraintEnd_toEndOf="parent"/>
