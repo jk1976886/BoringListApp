@@ -19,7 +19,8 @@ class TodoListActivity : AppCompatActivity() {
     var listTitle:String = ""
     var numberOfItemsToPick:Int = -1
     var resetPeriod:String = ""
-    var allowDuplicate:Boolean = false;
+    var allowReplacement:Boolean = false;
+    var intentList:ArrayList<String> = ArrayList()
     var listTodoItemsArray:ArrayList<String> = ArrayList()
     var listCompletedItemsArray:ArrayList<String> = ArrayList()
 
@@ -48,7 +49,7 @@ class TodoListActivity : AppCompatActivity() {
         var settingsButton: ImageView? = supportActionBar?.customView?.findViewById(R.id.action_bar_settings_button)
         settingsButton?.visibility = View.VISIBLE
         settingsButton?.setOnClickListener {
-            this.startActivity(Intent(this, TodoListSettingsActivity::class.java))
+            this.startActivity(Intent(this, TodoListSettingsActivity::class.java).putExtra("list", intentList))
         }
 
         setContentView(R.layout.activity_todo_list)
@@ -66,13 +67,13 @@ class TodoListActivity : AppCompatActivity() {
     }
 
     private fun parseIntent(){
-        var intentList = intent.getStringArrayListExtra("list")
+        intentList = intent.getStringArrayListExtra("list") as ArrayList<String>
 
         if(intentList != null){
             listTitle = intentList[0]
             numberOfItemsToPick = intentList[1].toInt()
             resetPeriod = intentList[2]
-            allowDuplicate = intentList[3].toBoolean()
+            allowReplacement = intentList[3].toBoolean()
 
             for(i in (5 until 5 + intentList[4].toInt())){
                 listTodoItemsArray.add(intentList[i])

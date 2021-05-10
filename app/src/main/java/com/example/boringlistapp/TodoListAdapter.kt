@@ -2,23 +2,27 @@ package com.example.boringlistapp
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
+import java.util.stream.Stream
 
-class TodoListAdapter(context:Context) : RecyclerView.Adapter<TodoListCell>() {
+class TodoListAdapter(context:Context, fileService:FileService) : RecyclerView.Adapter<TodoListCell>() {
     var context:Context = context
+    var fileService:FileService = fileService
     var listArray:ArrayList<ArrayList<String>> = ArrayList();
 
     init {
         var fileContent:String = ""
-        context.openFileInput("SavedLists").bufferedReader().useLines {
-            for(line in it){
+        var lines: Stream<String>? = fileService.readFromFile()
+        if(lines != null){
+            for(line in lines){
                 var parsedList:ArrayList<String> = ArrayList()
                 parsedList.addAll(line.split(","))
-                Log.d("Jacky", "parsedList: " + parsedList.toString())
                 listArray.add(parsedList)
             }
         }
