@@ -10,11 +10,18 @@ import androidx.recyclerview.widget.RecyclerView
 
 class TodoListAdapter(context:Context) : RecyclerView.Adapter<TodoListCell>() {
     var context:Context = context
-    //For now, lists are an array of array, where First Item = Title. No list settings are stored.
     var listArray:ArrayList<ArrayList<String>> = ArrayList();
 
     init {
-        setListArray()
+        var fileContent:String = ""
+        context.openFileInput("SavedLists").bufferedReader().useLines {
+            for(line in it){
+                var parsedList:ArrayList<String> = ArrayList()
+                parsedList.addAll(line.split(","))
+                Log.d("Jacky", "parsedList: " + parsedList.toString())
+                listArray.add(parsedList)
+            }
+        }
     }
 
     private fun setListArray(){
@@ -28,15 +35,15 @@ class TodoListAdapter(context:Context) : RecyclerView.Adapter<TodoListCell>() {
         }
     }
 
-    private fun composeItemText(listItemsArray:ArrayList<String>): String {
+    private fun composeItemText(listArray:ArrayList<String>): String {
         var combinedString:String = ""
 
-        for (i in (1 until listItemsArray.size)){
-            if(i != 1){
+        for (i in (5 until 5 + listArray[4].toInt())){
+            if(combinedString != ""){
                 combinedString += "\n"
             }
             combinedString += " - "
-            combinedString += listItemsArray[i]
+            combinedString += listArray[i]
         }
         return combinedString
     }

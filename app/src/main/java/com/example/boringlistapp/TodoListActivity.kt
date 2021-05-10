@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.Window
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -16,7 +17,11 @@ import org.w3c.dom.Text
 
 class TodoListActivity : AppCompatActivity() {
     var listTitle:String = ""
-    var list:ArrayList<String> = ArrayList()
+    var numberOfItemsToPick:Int = -1
+    var resetPeriod:String = ""
+    var allowDuplicate:Boolean = false;
+    var listTodoItemsArray:ArrayList<String> = ArrayList()
+    var listCompletedItemsArray:ArrayList<String> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +41,9 @@ class TodoListActivity : AppCompatActivity() {
         var titleView: TextView? = supportActionBar?.customView?.findViewById(R.id.action_bar_title)
         titleView?.text = listTitle
 
-        var pickButton: TextView? = supportActionBar?.customView?.findViewById(R.id.action_bar_pick_button)
+        var pickButton: Button? = supportActionBar?.customView?.findViewById(R.id.action_bar_pick_button)
         pickButton?.visibility = View.VISIBLE
-        pickButton?.text = "Pick 3"
+        pickButton?.text = "Pick " + numberOfItemsToPick
 
         var settingsButton: ImageView? = supportActionBar?.customView?.findViewById(R.id.action_bar_settings_button)
         settingsButton?.visibility = View.VISIBLE
@@ -46,16 +51,15 @@ class TodoListActivity : AppCompatActivity() {
             this.startActivity(Intent(this, TodoListSettingsActivity::class.java))
         }
 
-
         setContentView(R.layout.activity_todo_list)
 
         var todoItemsRecyclerView:RecyclerView = findViewById(R.id.todo_items_recycler_view)
-        todoItemsRecyclerView.adapter = TodoItemAdapter(this, list)
+        todoItemsRecyclerView.adapter = TodoItemAdapter(this, listTodoItemsArray)
         todoItemsRecyclerView.layoutManager = LinearLayoutManager(this)
         todoItemsRecyclerView.isNestedScrollingEnabled = false
 
         var completedItemsRecyclerView:RecyclerView = findViewById(R.id.completed_items_recycler_view)
-        completedItemsRecyclerView.adapter = TodoItemAdapter(this, list)
+        completedItemsRecyclerView.adapter = TodoItemAdapter(this, listCompletedItemsArray)
         completedItemsRecyclerView.layoutManager = LinearLayoutManager(this)
         completedItemsRecyclerView.isNestedScrollingEnabled = false
 
@@ -65,14 +69,17 @@ class TodoListActivity : AppCompatActivity() {
         var intentList = intent.getStringArrayListExtra("list")
 
         if(intentList != null){
-            var title:Boolean = true
-            for(item in intentList){
-                if(title){
-                    listTitle = item
-                    title = false
-                }else{
-                    list.add(item)
-                }
+            listTitle = intentList[0]
+            numberOfItemsToPick = intentList[1].toInt()
+            resetPeriod = intentList[2]
+            allowDuplicate = intentList[3].toBoolean()
+
+            for(i in (5 until 5 + intentList[4].toInt())){
+                listTodoItemsArray.add(intentList[i])
+            }
+
+            for(i in (6 + intentList[4].toInt() until intentList.size)){
+                listCompletedItemsArray.add(intentList[i])
             }
         }
     }
